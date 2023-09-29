@@ -1,0 +1,19 @@
+{% extends 'layout/base.html' %}
+{% load custom_filters %}
+
+<h3>
+   <a href="{% url 'newapp:new_detail' news.id %}">
+    {{ new.title|censor }}
+  </a>
+</h3>
+
+<p class="details">
+   By <span class="author">{{new.author}}</span>
+  Category:
+  {% for c in new.category.values %}
+  <a href="{% url 'newapp:category' c.id %}" class="category">{{c.name}}
+  </a>
+  {% endfor %}
+</p>
+
+

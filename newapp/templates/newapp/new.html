@@ -1,0 +1,33 @@
+{% extends 'layout/base.html' %}
+{% load custom_filters %}
+ 
+{% block title %}
+New
+{% endblock title %}
+ 
+{% block content %}
+  <table class="table">
+    <tr>
+        <th scope="col">
+            Заголовок
+        </th>
+         <th scope="col">
+            Дата
+        </th>
+        <th scope="col">
+            Новость
+        </th>
+    </tr>
+    <tr>
+        <td>
+            {{ new.title|safe|censor }}
+        </td>
+        <td>
+            {{ new.dateCreation }}
+        </td>
+        <td>
+            {{ new.text|censor }}
+        </td>
+    </tr>
+  </table>
+{% endblock content %}

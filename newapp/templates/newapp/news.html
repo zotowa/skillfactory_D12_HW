@@ -1,0 +1,85 @@
+{% extends 'layout/base.html' %}
+{% load custom_filters %}
+
+{% block title %}
+News
+{% endblock title %}
+
+{% block content %}
+
+<h1>Все новости</h1>
+{% if news %}
+
+<h3>{{ time_now }}</h3>
+<!-- Здесь мы применяем фильтр date. Он очень похож на метод strftime у даты. С его помощью мы можем выводить дату в нужном нам формате -->
+<!-- <a href="{% url 'newapp:search' %}" class="btn btn-primary my-3">Найти новость/статью</a> -->
+<form method="GET">
+   {{ filter.form }}
+   <!-- Форму от фильтров за нас сделает Django. А вот кнопку, увы, придётся делать самим -->
+   <input class="btn btn-primary" type="submit" value="Найти">
+</form>
+
+<table class="table">
+    <tr>
+        <th scope="col">
+            Автор
+        </th>
+        <th scope="col">
+            Заголовок
+        </th>
+         <th scope="col">
+            Дата
+        </th>
+        <th scope="col">
+            Новость
+        </th>
+        <th scope="col">
+            Категория
+        </th>
+
+
+    </tr>
+    {% for new in news %}
+    <tr>
+        <td>
+            <a href="{% url 'newapp:new_detail' new.id %}">
+            {{ new.author|safe }}
+            </a>
+        </td>
+        <td>
+            {{ new.title|safe|censor }}
+        </td>
+        <td>
+            {{ new.dateCreation|date:"d-M-Y H:i" }}
+        </td>
+        <td>
+            {{ new.text|truncatechars:50|censor }}
+        </td>
+        <td>
+             {% for c in new.category.values %}
+        <a href="{% url 'newapp:category' c.id %}">{{ c.name }}</a>
+            <br>
+        {% endfor %}
+        <!--    <a href="{% url 'newapp:category' new.id %}">
+                {{ new.get_categoryType_display }} </a> -->
+        </td>
+    <td>
+       <a href="{% url 'newapp:new_update' new.id %}">
+           Редактировать
+       </a>
+       <a href="{% url 'newapp:new_delete' new.id %}">
+           Удалить
+       </a>
+   </td>
+    </tr>
+    {% endfor %}
+</table>
+<a href="{% url 'newapp:new_create' %}" class="btn btn-primary my-3">Добавить новость/статью</a>
+<br>
+{% include 'newapp/parts/paginator.html' %}
+{% else %}
+<!-- Если новостей нет, то сообщаем об этом пользователю  -->
+<h2>Новостей нет</h2>
+{% endif %}
+
+{% endblock content %}

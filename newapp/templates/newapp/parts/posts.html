@@ -1,0 +1,16 @@
+
+{% load custom_filters %}
+
+{% if news %}
+{% for new in news %}
+
+{% include 'newapp/parts/details.html' %}
+<p>
+    {{ new.text|censor }}
+</p>
+
+{% endfor %}
+
+{% else %}
+<h2>Нет новостей</h2>
+{% endif %}
